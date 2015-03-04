@@ -350,9 +350,10 @@ module Resque
 
       def around_perform_metrics(*args)
         start = Time.now
-        yield
+        result = yield
         finish = ((Time.now.to_f - start.to_f) * 1000).to_i
         Resque::Metrics.record_job_completion(self, finish)
+        result
       end
 
       def on_failure_metrics(e, *args)
